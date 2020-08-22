@@ -1,4 +1,7 @@
 import React, { Component, useEffect } from "react";
+import { connect } from "react-redux";
+import propTypes from "prop-types";
+import { addLead } from "../actions/leads";
 
 export class AddLeadForm extends Component {
   state = {
@@ -7,10 +10,19 @@ export class AddLeadForm extends Component {
     message: "",
   };
 
+  static propTypes = {
+    addLead: propTypes.func.isRequired,
+  };
+
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onSubmit = (e) => {
     e.preventDefault();
+
+    const { name, email, message } = this.state;
+    const lead = { name, email, message };
+    this.props.addLead(lead);
+
     this.setState({
       name: "",
       email: "",
@@ -65,4 +77,4 @@ export class AddLeadForm extends Component {
   }
 }
 
-export default AddLeadForm;
+export default connect(null, { addLead })(AddLeadForm);
